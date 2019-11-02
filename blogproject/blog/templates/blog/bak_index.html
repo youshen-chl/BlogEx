@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <h1>{{ welcome }}</h1>
+    {% for post in post_list %}
+        <h2><strong>{{ post.title }}</strong></h2>
+        <p>{{ post.excerpt }}</p>
+        <p>{{ post.body }}</p>
+        <span>创建时间:{{ post.created_time }}</span> <br/>
+        <span>分类：{{ post.category }}</span> <br/>
+        <span>标签：{{ post.tag }}</span> <br/>
+        <span>作者：{{ post.author }}</span> <br/>
+    {% endfor %}
+</body>
+</html>
