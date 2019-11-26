@@ -11,6 +11,7 @@ django = "==2.2.3"
 markdown = "*"
 gunicorn = "*"
 supervisor = "*"
+faker = "*"
 
 [requires]
 python_version = "3.7"
