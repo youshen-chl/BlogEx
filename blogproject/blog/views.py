@@ -7,15 +7,32 @@ from django.utils.text import slugify
 import markdown
 from markdown.extensions.toc import TocExtension
 import re
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def index(request):
 
     post_list = Post.objects.all()
-#    return HttpResponse('欢迎大家来到我的博客！')
+
+    paginator = Paginator(post_list, 2) # 每页显示 25 个联系人
+ 
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        # 如果用户请求的页码号不是整数，显示第一页
+        contacts = paginator.page(1)
+    except EmptyPage:
+        # 如果用户请求的页码号超过了最大页码号，显示最后一页
+        contacts = paginator.page(paginator.num_pages)
+ 
+    is_paginated = True if paginator.num_pages >= 2 else False
+
     return render(request, 'blog/index.html',context={
-        # 'title' : '我的博客首页',
-        # 'welcome' : '欢迎访问我的博客',
-        'post_list' : post_list
+        'page_obj' : contacts,
+        # 'is_paginated' : is_paginated,
+        # 'paginator' : paginator,
+        'currentPage'   : page,
+        # 'listNum'   : ,
     })
 
 def category(request, pk):

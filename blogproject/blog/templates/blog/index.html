@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block main %}
-{% for post in post_list %}   <!--  循环主体  -->
+{% for post in page_obj.object_list %}   <!--  循环主体  -->
     <article class="post post-{{ post.pk }}">
         <header class="entry-header">
             <h1 class="entry-title">
@@ -29,14 +29,35 @@
 
 
 
-    <!-- 简单分页效果
+    <!-- 简单分页效果 -->
+    <!-- {% if is_paginated %}
     <div class="pagination-simple">
-        <a href="#">上一页</a>
-        <span class="current">第 6 页 / 共 11 页</span>
-        <a href="#">下一页</a>
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">上一页</a>
+    {% endif %}
+    <span class="current">第 {{ page_obj.number }} 页 / 共 {{ paginator.num_pages }} 页</span>
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">下一页</a>
+    {% endif %}
     </div>
-    -->
-    <div class="pagination">
+    {% endif %} -->
+    
+    
+    <div class="pagination-holder clearfix">
+        <div id="light-pagination" class="pagination"></div>
+    </div>
+
+    <script>
+        $('#light-pagination').pagination({
+            items : 8 ,
+            itemsOnPage : 2 ,
+            currentPage: {{ currentPage }},
+            cssStyle : 'light-theme',
+            hrefTextPrefix : '?page=',
+        });
+    </script>
+
+    <!-- <div class="pagination">
         <ul>
             <li><a href="">1</a></li>
             <li><a href="">...</a></li>
@@ -48,5 +69,5 @@
             <li><a href="">...</a></li>
             <li><a href="">11</a></li>
         </ul>
-    </div>
+    </div> -->
 {% endblock main %}
