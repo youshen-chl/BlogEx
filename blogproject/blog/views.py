@@ -13,7 +13,7 @@ def index(request):
 
     post_list = Post.objects.all()
 #    return HttpResponse('欢迎大家来到我的博客！')
-    paginator = Paginator(post_list, 2)
+    paginator = Paginator(post_list, 8)
 
     page = request.GET.get('page')
     try:
