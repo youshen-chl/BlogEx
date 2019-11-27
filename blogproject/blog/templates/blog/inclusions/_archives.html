@@ -1,3 +1,4 @@
+{% load blog_extras %}
 <div class="widget widget-archives">
     <h3 class="widget-title">归档</h3>
     <ul>
@@ -5,6 +6,7 @@
         <li>
             <a href="{% url 'blog:archive' date.year date.month %}">
                 {{ date.year }}年{{ date.month }}月
+                <span class="post-count">({% show_archives_num  date.year  date.month  %})</span>
             </a>
         </li>
         {% empty %}
