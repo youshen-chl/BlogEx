@@ -44,20 +44,43 @@
     
     {% if is_paginated %}
     <div class="pagination-holder clearfix">
-        <div id="light-pagination" class="pagination"></div>
+        <div id="light-pagination" class="pagination" style="float: left"></div>
+        <div class="pagination" style="float: left; margin:0px;">
+            <span style="display:inline-block">每页数量</span>
+            <form id="myForm" action="" method="GET" style="display:inline-block">
+              <select id="itemsSelect" name="itemsOnPage" onchange="changeItemsOnPage()">
+                <option value="5">5</option>
+                <option value="10" >10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <!-- <input type="text" name="name" value="sss"> -->
+              </select>
+            </form>
+          </div>
     </div>
-    {% endif %}
+    
     <script>
+        (function(){
+            var items = {{ itemsOnPage }} / 5 - 1 ;
+            // console.log(items.toString());
+            document.getElementById("itemsSelect").selectedIndex = items.toString();
+        })();
+        
+
         $('#light-pagination').pagination({
             items : {{ post_list_num }} ,
-            itemsOnPage : 10 ,
+            itemsOnPage : {{ itemsOnPage }} ,
             currentPage: {{ currentPage }},
             displayedPages  : 5,
             cssStyle : 'light-theme',
-            hrefTextPrefix : '?page=',
+            hrefTextPrefix : '?itemsOnPage={{ itemsOnPage }}&page=',
         });
+
+        function changeItemsOnPage(){
+            document.getElementById("myForm").submit()
+            };
     </script>
-    
+    {% endif %}
     <!-- <div class="pagination">
         <ul>
             <li><a href="">1</a></li>

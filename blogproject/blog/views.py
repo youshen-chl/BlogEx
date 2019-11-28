@@ -13,7 +13,12 @@ def index(request):
 
     post_list = Post.objects.all()
     post_list_num = Post.objects.count()
-    paginator = Paginator(post_list, 10) # 每页显示 10 个数据
+
+    itemsOnPage = request.GET.get('itemsOnPage')
+    if(not itemsOnPage):
+        itemsOnPage = 10
+    # print(itemsOnPage)
+    paginator = Paginator(post_list, itemsOnPage) # 每页显示 10 个数据
  
     page = request.GET.get('page')
     try:
@@ -33,6 +38,7 @@ def index(request):
         'post_list_num' : post_list_num,
         'is_paginated' : is_paginated,
         'currentPage'   : page,
+        'itemsOnPage'   : itemsOnPage,
     })
 
 def category(request, pk):
@@ -40,7 +46,11 @@ def category(request, pk):
     post_list = Post.objects.filter(category=categy)
     post_list_num = post_list.count()
 
-    paginator = Paginator(post_list, 10) # 每页显示 10 个数据
+    itemsOnPage = request.GET.get('itemsOnPage')
+    if(not itemsOnPage):
+        itemsOnPage = 10
+    # print(itemsOnPage)
+    paginator = Paginator(post_list, itemsOnPage) # 每页显示 10 个数据
     page = request.GET.get('page')
     try:
         contacts = paginator.page(page)
@@ -59,6 +69,7 @@ def category(request, pk):
         'post_list_num' : post_list_num,
         'is_paginated' : is_paginated,
         'currentPage'   : page,
+        'itemsOnPage'   : itemsOnPage,
     })
 
 def archive(request, year, month):
@@ -67,7 +78,11 @@ def archive(request, year, month):
 
     post_list_num = post_list.count()
 
-    paginator = Paginator(post_list, 10) # 每页显示 10 个数据
+    itemsOnPage = request.GET.get('itemsOnPage')
+    if(not itemsOnPage):
+        itemsOnPage = 10
+    # print(itemsOnPage)
+    paginator = Paginator(post_list, itemsOnPage) # 每页显示 10 个数据
     page = request.GET.get('page')
     try:
         contacts = paginator.page(page)
@@ -86,6 +101,7 @@ def archive(request, year, month):
         'post_list_num' : post_list_num,
         'is_paginated' : is_paginated,
         'currentPage'   : page,
+        'itemsOnPage'   : itemsOnPage,
     })
 
 def tags(request, pk):
@@ -93,7 +109,11 @@ def tags(request, pk):
     post_list = Post.objects.filter(tags=tag)
     post_list_num = post_list.count()
 
-    paginator = Paginator(post_list, 10) # 每页显示 10 个数据
+    itemsOnPage = request.GET.get('itemsOnPage')
+    if(not itemsOnPage):
+        itemsOnPage = 10
+    # print(itemsOnPage)
+    paginator = Paginator(post_list, itemsOnPage) # 每页显示 10 个数据
     page = request.GET.get('page')
     try:
         contacts = paginator.page(page)
@@ -112,6 +132,7 @@ def tags(request, pk):
         'post_list_num' : post_list_num,
         'is_paginated' : is_paginated,
         'currentPage'   : page,
+        'itemsOnPage'   : itemsOnPage,
     })
 
 def detail(request, pk):
