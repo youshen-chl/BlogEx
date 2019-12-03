@@ -12,53 +12,135 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 def index(request):
 
     post_list = Post.objects.all()
-#    return HttpResponse('欢迎大家来到我的博客！')
-    paginator = Paginator(post_list, 8)
+    post_list_num = Post.objects.count()
 
+    itemsOnPage = request.GET.get('itemsOnPage')
+    if(not itemsOnPage):
+        itemsOnPage = 10
+    # print(itemsOnPage)
+    paginator = Paginator(post_list, itemsOnPage) # 每页显示 10 个数据
+ 
     page = request.GET.get('page')
     try:
         contacts = paginator.page(page)
     except PageNotAnInteger:
         # 如果用户请求的页码号不是整数，显示第一页
         contacts = paginator.page(1)
+        page = 1
     except EmptyPage:
         # 如果用户请求的页码号超过了最大页码号，显示最后一页
         contacts = paginator.page(paginator.num_pages)
-
-    is_paginated = True if paginator.num_pages >= 2 else False
-
+ 
+    is_paginated = True if paginator.num_pages > 1 else False
+    # print(is_paginated)
     return render(request, 'blog/index.html',context={
-        # 'title' : '我的博客首页',
-        # 'welcome' : '欢迎访问我的博客',
-        'page_obj'  : contacts ,
-        'is_paginated' : is_paginated ,
-        'paginator' : paginator,
+        'page_obj' : contacts,
+        'post_list_num' : post_list_num,
+        'is_paginated' : is_paginated,
+        'currentPage'   : page,
+        'itemsOnPage'   : itemsOnPage,
     })
 
 def category(request, pk):
     categy = get_object_or_404(Category, pk=pk)
     post_list = Post.objects.filter(category=categy)
+    post_list_num = post_list.count()
+
+    itemsOnPage = request.GET.get('itemsOnPage')
+    if(not itemsOnPage):
+        itemsOnPage = 10
+    # print(itemsOnPage)
+    paginator = Paginator(post_list, itemsOnPage) # 每页显示 10 个数据
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        # 如果用户请求的页码号不是整数，显示第一页
+        contacts = paginator.page(1)
+        page = 1
+    except EmptyPage:
+        # 如果用户请求的页码号超过了最大页码号，显示最后一页
+        contacts = paginator.page(paginator.num_pages)
+ 
+    is_paginated = True if paginator.num_pages >= 2 else False
+
     return render(request, 'blog/index.html',context={
-        'post_list' : post_list
+        'page_obj' : contacts,
+        'post_list_num' : post_list_num,
+        'is_paginated' : is_paginated,
+        'currentPage'   : page,
+        'itemsOnPage'   : itemsOnPage,
     })
 
 def archive(request, year, month):
     post_list = Post.objects.filter(created_time__year=year,
                                     created_time__month=month)
 
+    post_list_num = post_list.count()
+
+    itemsOnPage = request.GET.get('itemsOnPage')
+    if(not itemsOnPage):
+        itemsOnPage = 10
+    # print(itemsOnPage)
+    paginator = Paginator(post_list, itemsOnPage) # 每页显示 10 个数据
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        # 如果用户请求的页码号不是整数，显示第一页
+        contacts = paginator.page(1)
+        page = 1
+    except EmptyPage:
+        # 如果用户请求的页码号超过了最大页码号，显示最后一页
+        contacts = paginator.page(paginator.num_pages)
+ 
+    is_paginated = True if paginator.num_pages >= 2 else False
+
     return render(request, 'blog/index.html',context={
-        'post_list' : post_list
+        'page_obj' : contacts,
+        'post_list_num' : post_list_num,
+        'is_paginated' : is_paginated,
+        'currentPage'   : page,
+        'itemsOnPage'   : itemsOnPage,
     })
 
 def tags(request, pk):
     tag = get_object_or_404(Tag, pk=pk)
     post_list = Post.objects.filter(tags=tag)
+    post_list_num = post_list.count()
+
+    itemsOnPage = request.GET.get('itemsOnPage')
+    if(not itemsOnPage):
+        itemsOnPage = 10
+    # print(itemsOnPage)
+    paginator = Paginator(post_list, itemsOnPage) # 每页显示 10 个数据
+    page = request.GET.get('page')
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        # 如果用户请求的页码号不是整数，显示第一页
+        contacts = paginator.page(1)
+        page = 1
+    except EmptyPage:
+        # 如果用户请求的页码号超过了最大页码号，显示最后一页
+        contacts = paginator.page(paginator.num_pages)
+ 
+    is_paginated = True if paginator.num_pages >= 2 else False
+
     return render(request, 'blog/index.html',context={
-        'post_list' : post_list
+        'page_obj' : contacts,
+        'post_list_num' : post_list_num,
+        'is_paginated' : is_paginated,
+        'currentPage'   : page,
+        'itemsOnPage'   : itemsOnPage,
     })
 
 def detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
+
+    # 阅读量+1
+    post.increase_views()
+
     md = markdown.Markdown(extensions=[
                                         'markdown.extensions.extra',
                                         'markdown.extensions.codehilite',
