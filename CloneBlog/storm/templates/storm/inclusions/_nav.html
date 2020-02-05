@@ -1,0 +1,51 @@
+{% load storm_tags %}
+<li id="menu-item-44" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-44">
+    <a href="/">首页</a>
+</li>
+
+<!-- 导航栏一级分类渲染 -->
+{% for big in bigcategory %}
+    <!-- 导航栏二级分类信息查询 -->
+
+    {% get_category_list big as cate%}
+    
+    {% if cate %}
+    <li id="menu-item-14" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-14">
+        <a href="{% url 'storm:category' big.slug '' %}">{{ big.name}} </a>
+        <ul class="sub-menu">
+            <!-- 导航栏二级分类渲染 -->
+            {% for c in cate %}
+            <li id="menu-item-19" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-19">
+                <a href="{% url 'storm:category' big.slug 'c.slug' %}">{{ c.name}} </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </li>
+    {% else %}
+    <li id="menu-item-851" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-851">
+        <a href="{% url 'storm:category' big.slug '' %}">{{ big.name}} </a>
+    </li>
+    {% endif %}
+{% empty %}
+
+{% endfor %}
+<!--导航条结束-->
+
+<!--搜索框-->
+<li style="float:right;">
+    <div class="toggle-search"><i class="fa fa-search"></i></div>
+    <div class="search-expand" style="display: none;">
+        <div class="search-expand-inner">
+            <form method="get" class="searchform themeform" 
+                onsubmit="location.href='https://cuiqingcai.com/?s=' + encodeURIComponent(this.s.value).replace(/%20/g, '+'); return false;" 
+                action="/">
+                <div> 
+                    <input type="ext" class="search" name="s" 
+                        onblur="if(this.value=='')this.value='search...';" 
+                        onfocus="if(this.value=='search...')this.value='';" 
+                        value="search...">
+                </div>
+            </form>
+        </div>
+    </div>
+</li>

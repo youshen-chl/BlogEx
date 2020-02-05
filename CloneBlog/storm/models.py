@@ -68,7 +68,7 @@ class Category(models.Model):
         default=settings.SITE_DESCRIPTION,
         help_text='用来作为SEO中的description, 长度参考SEO标准'
     )
-    bigcategory = models.ForeignKey(BigCategory, verbose_name='大分类', on_delete=models.CASCADE())
+    bigcategory = models.ForeignKey(BigCategory, verbose_name='大分类', on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = '分类'
@@ -90,7 +90,7 @@ class Category(models.Model):
 class Article(models.Model):
     IMG_LINK = '/static/images/summary.jpg'
 
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='作者', on_delete=models.SET_NULL )
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='作者', on_delete=models.SET_NULL, null=True, blank=True)
     title = models.CharField(max_length=150, verbose_name='文章标题')
     summary = models.TextField(max_length=240, verbose_name='文章摘要', 
                     default='文章摘要等同于网页description内容，请务必填写...'    )

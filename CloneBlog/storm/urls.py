@@ -7,4 +7,6 @@ app_name = 'storm'
 
 urlpatterns = [
     path('', views.hello, name='hello'),
+    path('list/', views.showlist, name='showlist'),
+    path('nav/', views.shownav, name='shownav'),
 ]

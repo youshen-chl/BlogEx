@@ -1,0 +1,14 @@
+
+{% load storm_tags %}
+<div>
+    <h3>显示inclusion_tag内容</h3>
+    <ul>
+        {% for i in showlists %}
+        <li>
+            <span>{{ i }} </span> <strong style="color: aqua;"> {% print_num i %} </strong>
+        </li>
+        {% empty %}
+            暂无数据！
+        {% endfor %}
+    </ul>
+</div>

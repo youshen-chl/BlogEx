@@ -4,3 +4,9 @@ from django.http import HttpResponse
 
 def hello(request):
     return HttpResponse('hello world!')
+
+def showlist(request):
+    return render(request, 'storm/index.html')
+
+def shownav(request):
+    return render(request, 'base.html')
