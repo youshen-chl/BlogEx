@@ -3,6 +3,41 @@ from django.conf import settings
 # Create your models here.
 from django.shortcuts import reverse
 
+import markdown
+import re
+
+# 关键词
+class Keyword(models.Model):
+    name = models.CharField('文章关键词',max_length=20)
+
+    class Meta:
+        verbose_name = '关键词'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
+
+# 标签
+class Tag(models.Model):
+    name = models.CharField('文章标签', max_length=20)
+    slug = models.SlugField(unique=True)
+    description = models.TextField('描述', max_length=240, default=settings.SITE_DESCRIPTION,
+                    help_text='用来作为SEO中的description, 长度参考SEO标准')
+
+    class Meta:
+        verbose_name = '文章标签'
+        verbose_name_plural = verbose_name
+        ordering = ['id']
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('blog:tag', kwargs={'tag': self.name})
+
+    def get_article_list(self):
+        return Article.objects.filter(tags=self)
+
 # 网站导航菜单栏分类表
 class BigCategory(models.Model):
     name = models.CharField('导航栏大分类', max_length=20)
@@ -49,7 +84,7 @@ class Category(models.Model):
         )
 
     def get_article_list(self):
-        return 
+        return Article.objects.filter(category=self)
 
 # 文章
 class Article(models.Model):
@@ -103,3 +138,17 @@ class Article(models.Model):
 
     def get_next(self):
         return Article.objects.filter(id__gt=self.id).order_by('id').first()
+
+# 幻灯片
+class Carousel(models.Model):
+    number = models.IntegerField('编号', help_text='编号决定图片播放的顺序，图片不要多于5张')
+    title = models.CharField('标题', max_length=20, blank=True, null=True, help_text='标题可以为空'    )
+    content = models.CharField('描述', max_length=80)
+    img_url = models.CharField('图片地址', max_length=200)
+    url = models.CharField('跳转链接', max_length=200, default='#', help_text='图片跳转的超链接，默认#为不跳转')
+
+    class Meta:
+        verbose_name = '图片轮播'
+        verbose_name_plural = verbose_name
+        # 编号越小越靠前， 添加时间越晚越靠前
+        ordering = ['number', '-id']
