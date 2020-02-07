@@ -1,0 +1,58 @@
+{% extends 'base_right.html' %}
+{% load staticfiles %}
+{% load storm_tags %}
+
+{% block body %}
+<div class="content-wrap">
+	<div class="content">
+		<div id="wowslider-container1">
+
+			{% show_carousel_images %}
+
+			<div class="ws_shadow"></div>
+		</div>
+		<script type="text/javascript" src="{% static 'js/slider.js' %}"></script>
+		<div>
+			<div class="left-ad" style="clear: both;background-color: #fff; width: 30%;float: left;margin-right:2%;">
+			</div>
+			<div class="hot-posts">
+				<h2 class="title">热门排行</h2>
+				<!-- 显示热门文章排行部分 -->
+				<ul>
+					{% get_article_list '-views' 5 as hot_articles %}
+					
+					{% for article in hot_articles %}
+					<li>
+						<p>	<span class="muted">
+							<i class="fa fa-eye"></i><span class="count">{{ article.views }} </span> 浏览
+							
+							</span>
+						</p>
+						<span class="label label-1">{{ forloop.counter}}</span>
+						<a href="/article/{{ article.slug }}" title="{{ article.title }}">{{ article.title }}</a>
+					</li>
+					{% endfor %}
+				</ul>
+
+			</div>
+		</div>
+
+		<!-- 显示文章列表部分 -->
+		{% show_article_list posts %}
+
+		<!-- 分页栏部分 -->
+		<div class="pagination">
+			<ul>
+				<li class="prev-page"></li>
+				<li class="active"><span>1</span></li>
+				<li><a href='https://cuiqingcai.com/page/2'>2</a></li>
+				<li><a href='https://cuiqingcai.com/page/3'>3</a></li>
+				<li><a href='https://cuiqingcai.com/page/4'>4</a></li>
+				<li><a href='https://cuiqingcai.com/page/5'>5</a></li>
+				<li><span> ... </span></li>
+				<li class="next-page"><a href="https://cuiqingcai.com/page/2" >下一页</a></li>
+			</ul>
+		</div>	
+	</div>
+</div>
+{% endblock body %}

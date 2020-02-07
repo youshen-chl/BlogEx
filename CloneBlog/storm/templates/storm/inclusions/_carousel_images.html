@@ -1,0 +1,20 @@
+
+<div class="ws_images">
+    <ul>
+        {% for carousel in carousels %}
+        <li>
+            <a target="_blank" href="{{ carousel.url }}" title="{{ carousel.content }}">
+            <img src="{{ carousel.img_url }}" title="{{ carousel.content }}" alt="{{ carousel.title }}" />
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="ws_thumbs">
+    <div>
+        {% for carousel in carousels %}
+        <a target="_blank" href="#" title="{{ carousel.title }}"><img src="{{ carousel.img_url }}" /></a>
+        {% endfor %}
+    </div>
+</div>

@@ -1,0 +1,38 @@
+{% for article in articles %}
+<article class="excerpt">
+    <header>
+        <a class="label label-important" href="/category/{{ article.category.bigcategory.name }}/
+        {{ article.category.name|lower }}">{{ article.category.name }}<i class="label-arrow"></i></a>
+        <h2>
+            <a target="_blank" href="{{ article.get_absolute_url }}" title="{{ article.title }}">{{ article.title }}</a>
+        </h2>
+    </header>
+    <div class="focus"><a target="_blank" href="{{ article.get_absolute_url }}">
+        <img class="thumb" width="200px" height="123px" src="{{ article.img_link }}" alt="{{ article.title }}" /></a>
+    </div>
+        <span class="note"> {{ article.summary }}</span>
+    <p class="auth-span">
+        <span class="muted">
+            <i class="fa fa-user"></i> <a href="#">{{ article.author }}</a>
+        </span>
+        <span class="muted">
+            <i class="fa fa-clock-o"></i> {{ article.create_date|date:'Y-m-d' }}
+        </span>	
+        <span class="muted">
+            <i class="fa fa-eye"></i> {{ article.views }}
+        </span>	
+        <span class="muted">
+            <i class="fa fa-comments-o"></i> 
+            <a target="_blank" href="https://cuiqingcai.com/6408.html#comments">152评论</a>
+        </span>
+        <span class="muted">
+            <a href="javascript:;" data-action="ding" data-id="6408" id="Addlike" class="action">
+                <i class="fa fa-heart-o"></i><span class="count">{{ article.loves }}</span>喜欢
+            </a>
+        </span>
+    </p>
+</article>
+{% empty %}
+<div class="no-post">暂时还没有发布的文章！</div>
+{% endfor %}
+

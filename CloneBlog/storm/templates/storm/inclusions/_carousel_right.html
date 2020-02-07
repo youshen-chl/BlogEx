@@ -1,0 +1,10 @@
+
+<div id='metaslider_2698' class='nivoSlider'>
+    {% for carousel in carousels %}
+    <a href="{{ carousel.url }} " target="_blank">
+        <img src="{{ carousel.img_url }}" height="300" width="320"
+         data-title="{{ carousel.content }}" title="{{ carousel.title }}" 
+         alt="{{ carousel.title }}" class="slider-2698 slide-1720" />
+    </a>
+    {% endfor %}
+</div>

@@ -16,7 +16,7 @@
             <!-- 导航栏二级分类渲染 -->
             {% for c in cate %}
             <li id="menu-item-19" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-19">
-                <a href="{% url 'storm:category' big.slug 'c.slug' %}">{{ c.name}} </a>
+                <a href="{% url 'storm:category' big.slug c.slug %}">{{ c.name}} </a>
             </li>
             {% endfor %}
         </ul>
@@ -49,3 +49,4 @@
         </div>
     </div>
 </li>
+<!--搜索框-->

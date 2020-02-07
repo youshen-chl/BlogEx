@@ -1,0 +1,7 @@
+<div class="d_tags">
+    {% for tag in tag_lists %}
+    <a title="{{ tag.total_num }}个话题" href="/tag/{{ tag.slug }}">{{ tag.name}} ({{ tag.total_num }})</a>
+    {% empty %}
+    <div>还没有设置标签</div>
+    {% endfor %}
+</div>

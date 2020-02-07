@@ -1,0 +1,7 @@
+<ul class='xoxo blogroll'>
+    {% for flink in friendlinks %}
+    <li><a href="{{ flink.link }}" target="_blank">{{ flink.name }}</a></li>
+    {% empty %}
+    <div>&nbsp;&nbsp;暂时没有友情链接</div>
+    {% endfor %}
+</ul>

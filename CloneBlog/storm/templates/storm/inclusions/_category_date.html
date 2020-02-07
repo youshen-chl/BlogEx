@@ -1,0 +1,7 @@
+<ul>
+    {% for article_date in article_dates %}
+    <li><a href="{% url 'storm:date' article_date|date:'Y' article_date|date:'m' %}">{{ article_date|date:'Y-m' }}</a></li>
+    {% empty %}
+    <div>近期没有发布文章</div>
+    {% endfor %}
+</ul>

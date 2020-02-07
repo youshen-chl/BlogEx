@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 # Create your models here.
 from django.shortcuts import reverse
+from django.utils import timezone
 
 import markdown
 import re
@@ -25,7 +26,7 @@ class Tag(models.Model):
                     help_text='用来作为SEO中的description, 长度参考SEO标准')
 
     class Meta:
-        verbose_name = '文章标签'
+        verbose_name = '标签'
         verbose_name_plural = verbose_name
         ordering = ['id']
 
@@ -71,7 +72,7 @@ class Category(models.Model):
     bigcategory = models.ForeignKey(BigCategory, verbose_name='大分类', on_delete=models.CASCADE)
 
     class Meta:
-        verbose_name = '分类'
+        verbose_name = '文章分类'
         verbose_name_plural = verbose_name
         ordering = ['name']
 
@@ -116,7 +117,7 @@ class Article(models.Model):
         return self.title[:20]
 
     def get_absolute_url(self):
-        return reverse('blog:article', kwargs={'slug': self.slug})
+        return reverse('storm:article', kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs):
         self.update_date = timezone.now()
@@ -152,3 +153,51 @@ class Carousel(models.Model):
         verbose_name_plural = verbose_name
         # 编号越小越靠前， 添加时间越晚越靠前
         ordering = ['number', '-id']
+
+    def __str__(self):
+        return self.content[:25]
+
+# 公告
+class Activate(models.Model):
+    text = models.TextField('公告', null=True)
+    is_active = models.BooleanField('是否开启', default=False)
+    add_date = models.DateTimeField('提交日期', auto_now_add=True)
+
+    class Meta:
+        verbose_name = '公告'
+        verbose_name_plural=verbose_name
+
+    def __str__(self):
+        return self.id 
+
+
+class FriendLink(models.Model):
+    name = models.CharField('网站名字', max_length=50)
+    description = models.CharField('网站描述', max_length=100, blank=True)
+    link = models.URLField('友链地址', help_text='请填写http或https开头的完整形式地址')
+    logo = models.URLField('友站LOGO', help_text='请填写http或https开头的完整形式地址', blank=True)
+    create_date = models.DateTimeField('创建时间', auto_now_add=True)
+    is_active = models.BooleanField('是否有效', default=True)
+    is_show = models.BooleanField('是否首页展示', default=False)
+
+    class Meta:
+        verbose_name = '友情链接'
+        verbose_name_plural = verbose_name
+        ordering = ['create_date']
+
+    def __str__(self):
+        return self.name
+    
+    def get_home_url(self):
+        ''' 提取友链主页'''
+        u = re.findall(r'(http|https://.*?)/.*?', self.link)
+        home_url = u[0] if u else self.link
+        return  home_url
+
+    def active_to_false(self):
+        self.is_active = False
+        self.save(update_fields=['is_active'])
+
+    def show_to_false(self):
+        self.is_show = False
+        self.save(update_fields=['is_show']) 
