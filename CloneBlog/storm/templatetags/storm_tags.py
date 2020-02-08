@@ -80,10 +80,10 @@ def get_article_list(sort=None, num=5):
 
 #显示文章列表
 @register.inclusion_tag('storm/inclusions/_article_list.html', takes_context=True)
-def show_article_list(context, posts):
+def show_article_list(context, articles):
 
     return {
-        'articles' : posts ,
+        'articles' : articles ,
     }
 
 #显示日期分类栏

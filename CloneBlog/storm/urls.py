@@ -6,11 +6,10 @@ from . import views
 app_name = 'storm'
 
 urlpatterns = [
-    path('', views.hello, name='hello'),
-    path('list/', views.showlist, name='showlist'),
-    path('nav/', views.shownav1, name='shownav'),
-    re_path('category/(?P<bigslug>.*?)/(?P<slug>.*?)', views.shownav, name='category'),
-    path('article/<slug:slug>/', views.show_article, name='article'),
-    path('date/<int:year>/<int:month>/', views.show_article, name='date'),
-    path('tag/<slug:tag>/', views.show_article, name='tag'),
+    path('', views.IndexView.as_view(template_name='index_main.html'), name='index'),
+    # path('nav/', views.IndexView.as_view(template_name='index_main.html'), name='shownav'),
+    re_path('category/(?P<bigslug>.*?)/(?P<slug>.*?)', views.IndexView.as_view(), name='category'), 
+    path('date/<int:year>/<int:month>/', views.IndexView.as_view(), name='date'),
+    path('tag/<slug:tag>/', views.IndexView.as_view(), name='tag'),
+    path('article/<slug:slug>/', views.HomePageView.as_view(), name='article'),
 ]
