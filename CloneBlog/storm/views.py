@@ -4,7 +4,10 @@ from django.http import HttpResponse
 from .models import Article, BigCategory, Category, Tag
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
-
+from django.views.generic.detail import DetailView
+import time, markdown
+from markdown.extensions.toc import TocExtension
+from django.utils.text import slugify
 
 class HomePageView(TemplateView):
     template_name = 'index_main.html'
@@ -189,3 +192,51 @@ class IndexView(ListView):
         }
 
         return data
+
+
+class ArticleView(DetailView):
+    '''
+        Django有基于类的视图DetailView,用于显示一个对象的详情页，我们继承它
+    '''
+    
+    model = Article
+
+    template_name = 'article.html'    
+
+    context_object_name = 'article'
+
+    def get_object(self):
+        obj = super(ArticleView, self).get_object()
+
+    # 设置浏览量增加时间判断,同一篇文章两次浏览超过半小时才重新统计阅览量,作者浏览忽略
+        u = self.request.user
+        ses = self.request.session
+        # print(u, ses)
+        the_key = 'is_read_{}'.format(obj.id)
+        is_read_time = ses.get(the_key)
+
+        if u != obj.author:
+            if not is_read_time:
+                obj.update_views()
+                ses[the_key] = time.time()
+            else:
+                now_time = time.time()
+                t = now_time - is_read_time
+                if t > 60 *30:
+                    obj.update_views()
+                    ses[the_key] = now_time
+        
+        md = markdown.Markdown(extensions=[
+            'markdown.extensions.extra',
+            'markdown.extensions.codehilite',
+            TocExtension(slugify=slugify),    
+        ])
+
+        obj.body = md.convert(obj.body)
+        obj.toc = md.toc
+        return obj
+
+    def get_context_data(self, **kwargs):
+        context = super(ArticleView, self).get_context_data(**kwargs)
+        context['category'] = self.object.id
+        return context

@@ -65,6 +65,10 @@ def show_tag_lists(context):
         "tag_lists" : Tag.objects.annotate(total_num=Count('article')).filter(total_num__gt=0),
     }
 
+@register.simple_tag
+def get_article_tag(article_id):
+    return Tag.objects.filter(article=article_id)
+
 #根据条件筛选提取文章列表
 @register.simple_tag
 def get_article_list(sort=None, num=5):

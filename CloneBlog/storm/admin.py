@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Article, BigCategory, Category, Carousel, Tag, Keyword, FriendLink
+from .models import Article, BigCategory, Category, Carousel, Tag, Keyword, FriendLink, Activate
 
 # 自定义管理站点的名称和URL标题
 admin.site.site_header = '网站管理'
@@ -49,3 +49,7 @@ class FriendLinkAdmin(admin.ModelAdmin):
     list_display = ('name','description','link','create_date','is_active','is_show')
     date_hierarchy = 'create_date'
     list_filter = ('is_active', 'is_show')
+
+@admin.register(Activate)
+class ActivateAdmin(admin.ModelAdmin):
+    list_display = ('text', 'add_date', 'is_active')

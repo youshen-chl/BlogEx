@@ -1,0 +1,136 @@
+{% extends 'base_right.html' %}
+{% load staticfiles %}
+{% load storm_tags %}
+
+{% block body %}
+<div class="content-wrap">
+	<div class="content">
+        <!-- 文章索引部分  XXX>xxx  -->
+        <div class="breadcrumbs">
+            <a title="返回首页" href="/"><i class="fa fa-home"></i></a>
+            <small></small>
+            <a href="/category/{{ article.category.bigcategory.slug }}">{{ article.category.bigcategory.name }}</a>
+            <small></small>
+            <span class="muted">{{ article.title }}</span>
+        </div>
+        <!-- 文章索引部分结束  -->
+
+        <!-- 文章标题部分 -->
+        <header class="article-header">
+            <h1 class="article-title">
+                <a href="">{{ article.title }}</a>
+            </h1>
+            <div class="meta">
+                <span id="mute-category" class="muted">
+                    <i class="fa fa-list-alt"></i>
+                    <a href="/category/{{ article.category.bigcategory.slug }}">{{ article.category.bigcategory.name }}</a>
+                </span>
+                <span class="muted">
+                    <i class="fa fa-user"></i>
+                    <a href="/author/{{ article.author.name }}">{{ article.author }}</a>
+                </span>
+                <time class="muted">
+                    <i class="fa fa-clock-o"></i> 
+                    {{ article.create_date|date:'Y-m-d' }}
+                </time>
+                <span class="muted"><i class="fa fa-eye"></i> {{article.views }}浏览</span>
+                <span class="muted">
+                    <a href="javascript:;" data-action="ding" data-id="13,449" id="in_add_like">
+                        <i class="fa fa-heart-o"></i>{{article.loves }}喜欢
+                    </a>  
+                </span>
+                <span class="muted">
+                    <i class="fa fa-comment-o"></i>
+                    <a href="#respond">0评论</a>
+                </span>
+            </div>
+        </header>
+        <!-- 文章标题部分结束 -->
+
+    <!-- 广告位置 -->
+        <!-- <div class="banner banner-post">
+            <div>
+                <a href="javascript:;"><img src="static/picture/865x90.png"></a>
+            </div>
+            <div>
+                <a href="javascript:;">
+                <img src="static/picture/2019-12-05-115917.jpg"></a>
+            </div>
+            <script>
+                (function(){
+                    var bp = document.createElement('script');
+                    var curProtocol = window.location.protocol.split(':')[0];
+                    if (curProtocol === 'https') {
+                        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+                    }
+                    else {
+                        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+                    }
+                    var s = document.getElementsByTagName("script")[0];
+                    s.parentNode.insertBefore(bp, s);
+                })();
+            </script>
+        </div>		 -->
+    <!-- 广告位置结束 -->
+
+        <!-- 文章内容主体部分 -->
+        <article class="article-content">
+            {{ article.body|safe }}
+            <p>转载请注明：
+                <a href="{% url 'storm:article' article.slug %}">行走的蜗牛</a>&raquo;
+                <a href="{% url 'storm:article' article.slug %}">{{ article.title}}</a>
+            </p>
+
+            <!-- 点赞和分享 -->
+            <div class="article-social">
+                <a href="javascript:;" data-action="ding" data-id="8811" id="Addlike" class="action">
+                    <i class="fa fa-heart-o"></i>喜欢 (<span class="count">{{ article.loves }}</span>)
+                </a>
+                <span class="or">or</span>
+                <span class="action action-share bdsharebuttonbox">
+                    <i class="fa fa-share-alt"></i>分享 (
+                    <span class="bds_count" data-cmd="count" title="累计分享0次">0</span>)
+                    <div class="action-popover">
+                        <div class="popover top in">
+                            <div class="arrow"></div>
+                            <div class="popover-content">
+                                <a href="#" class="sinaweibo fa fa-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+                                <a href="#" class="bds_qzone fa fa-star" data-cmd="qzone" title="分享到QQ空间"></a>
+                                <a href="#" class="tencentweibo fa fa-tencent-weibo" data-cmd="tqq" title="分享到腾讯微博"></a>
+                                <a href="#" class="qq fa fa-qq" data-cmd="sqq" title="分享到QQ好友"></a>
+                                <a href="#" class="bds_renren fa fa-renren" data-cmd="renren" title="分享到人人网"></a>
+                                <a href="#" class="bds_weixin fa fa-weixin" data-cmd="weixin" title="分享到微信"></a>
+                                <a href="#" class="bds_more fa fa-ellipsis-h" data-cmd="more"></a>
+                            </div>
+                        </div>
+                    </div>
+                </span>	
+            </div>
+        </article>
+
+        <footer class="article-footer">
+            <!--文章标签-->
+            <div class="article-tags">
+                <i class="fa fa-tags"></i>
+                {% get_article_tag article as tags %}
+                {% for tag in tags %}..
+                    <a href="{% url 'storm:tag' tag.slug %}" rel="tag">{{ tag.name }}</a>
+                {% endfor %}
+            </div>
+        </footer>
+
+        <!--推荐文章快捷跳转-->
+        <nav class="article-nav">
+			<span class="article-nav-prev">
+                <i class="fa fa-angle-double-left"></i> 
+                <a href="/article/{{ article.get_pre.slug }}" rel="prev">{{ article.get_pre.title }}</a>
+            </span>
+            <span class="article-nav-next">
+                <a href="/article/{{ article.get_next.slug }}" rel="prev">{{ article.get_next.title }}</a>
+                <i class="fa fa-angle-double-right"></i> 
+            </span>
+            
+		</nav>
+	</div>
+</div>
+{% endblock body %}
