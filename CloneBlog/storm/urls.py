@@ -12,4 +12,5 @@ urlpatterns = [
     path('date/<int:year>/<int:month>/', views.IndexView.as_view(), name='date'),
     path('tag/<slug:tag>/', views.IndexView.as_view(), name='tag'),
     path('article/<slug:slug>/', views.ArticleView.as_view(), name='article'),
+    path('love/',views.LoveView, name='loves')
 ]

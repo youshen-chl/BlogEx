@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.http import HttpResponse
 # Create your views here.
 from .models import Article, BigCategory, Category, Tag
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -240,3 +241,15 @@ class ArticleView(DetailView):
         context = super(ArticleView, self).get_context_data(**kwargs)
         context['category'] = self.object.id
         return context
+
+
+@csrf_exempt
+def LoveView(request):
+    data_id = request.POST.get('um_id', '')
+    if data_id:
+        art = Article.objects.get(id=data_id)
+        art.loves += 1
+        art.save()
+        return HttpResponse(art.loves)
+    else:
+        return HttpResponse('error', status=405)

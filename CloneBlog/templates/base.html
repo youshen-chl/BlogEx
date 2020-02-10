@@ -64,18 +64,18 @@ window._deel = {name: '静觅',url: 'https://cuiqingcai.com/wp-content/themes/Yu
 			c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(h=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",h,!1),a.addEventListener("load",h,!1)):(a.attachEvent("onload",h),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),g=c.source||{},g.concatemoji?f(g.concatemoji):g.wpemoji&&g.twemoji&&(f(g.twemoji),f(g.wpemoji)))}(window,document,window._wpemojiSettings);
 </script>
 <style type="text/css">
-img.wp-smiley,
-img.emoji {
-	display: inline !important;
-	border: none !important;
-	box-shadow: none !important;
-	height: 1em !important;
-	width: 1em !important;
-	margin: 0 .07em !important;
-	vertical-align: -0.1em !important;
-	background: none !important;
-	padding: 0 !important;
-}
+	img.wp-smiley,
+	img.emoji {
+		display: inline !important;
+		border: none !important;
+		box-shadow: none !important;
+		height: 1em !important;
+		width: 1em !important;
+		margin: 0 .07em !important;
+		vertical-align: -0.1em !important;
+		background: none !important;
+		padding: 0 !important;
+	}
 </style>
 <link rel='stylesheet' id='crayon-css'  href="{% static 'css/crayon.min.css' %}" type='text/css' media='all' />
 <link rel='stylesheet' id='crayon-theme-github-css'  href="{% static 'css/github.css' %}" type='text/css' media='all' />
@@ -129,6 +129,104 @@ img.emoji {
 		text-decoration: none;
 	}
 </style>
+<script>
+	$(function () {
+		// 还原文章插图
+		$("article").find('img').each(function () {
+			var realWidth = this.width;     //获取图片真实宽度
+			if (realWidth > 780) {
+				$(this).attr("width", '780');
+			}
+			$(this).click(function () {
+				var _this = $(this);
+				imgShow("#outerdiv", "#innerdiv", "#bigimg", _this);
+			});
+		});
+
+		$("img").find('img').each(function () {
+			$(this).click(function () {
+				var _this = $(this);//将当前的pimg元素作为_this传入函数
+				imgShow("#outerdiv", "#innerdiv", "#bigimg", _this);
+			});
+		});
+		// 点击喜欢
+		$('.muted').delegate("a[id='in_add_like']", "click", function () {
+			if ($(this).hasClass("actived")) {
+				return alert("已经点过赞啦！")
+			} else {
+				$(this).addClass("actived");
+				var z = $(this).data("id"), x = $(this).children(".count");
+				var article = z.split(',')[0];
+				var loves = z.split(',')[1];
+				loves = Number(loves) + 1;
+				x.html(loves);
+				$.ajax({
+					type: "POST",//方法类型
+					url: "/love/",//url
+					dataType: "JSON",
+					data: {"um_id": article, "loves": true},
+					success: function (data) {
+						console.log(data);
+					},
+					error: function (data) {
+						console.log(data);
+					}
+				});
+			}
+		})
+		//点击赞赏
+		var flag = true;
+		$('#support').on('click', function () {
+			if (flag) {
+				$('#sponsor-wx').addClass("show");
+				$('#sponsor-zfb').addClass("show");
+				flag = false
+			} else {
+				$('#sponsor-wx').removeClass('show');
+				$('#sponsor-zfb').removeClass('show');
+				flag = true
+			}
+		})
+	});
+
+	function imgShow(outerdiv, innerdiv, bigimg, _this) {
+		var src = _this.attr("src");//获取当前点击的pimg元素中的src属性
+		$(bigimg).attr("src", src);//设置#bigimg元素的src属性
+
+		/*获取当前点击图片的真实大小，并显示弹出层及大图*/
+		$("<img/>").attr("src", src).load(function () {
+			var windowW = $(window).width();//获取当前窗口宽度
+			var windowH = $(window).height();//获取当前窗口高度
+			var realWidth = this.width;//获取图片真实宽度
+			var realHeight = this.height;//获取图片真实高度
+			var imgWidth, imgHeight;
+			var scale = 0.8;//缩放尺寸，当图片真实宽度和高度大于窗口宽度和高度时进行缩放
+
+			if (realHeight > windowH * scale) {//判断图片高度
+				imgHeight = windowH * scale;//如大于窗口高度，图片高度进行缩放
+				imgWidth = imgHeight / realHeight * realWidth;//等比例缩放宽度
+				if (imgWidth > windowW * scale) {//如宽度扔大于窗口宽度
+					imgWidth = windowW * scale;//再对宽度进行缩放
+				}
+			} else if (realWidth > windowW * scale) {//如图片高度合适，判断图片宽度
+				imgWidth = windowW * scale;//如大于窗口宽度，图片宽度进行缩放
+				imgHeight = imgWidth / realWidth * realHeight;//等比例缩放高度
+			} else {//如果图片真实高度和宽度都符合要求，高宽不变
+				imgWidth = realWidth;
+				imgHeight = realHeight;
+			}
+			$(bigimg).css("width", imgWidth);//以最终的宽度对图片缩放
+
+			var w = (windowW - imgWidth) / 2;//计算图片与窗口左边距
+			var h = (windowH - imgHeight) / 2;//计算图片与窗口上边距
+			$(innerdiv).css({"top": h, "left": w});//设置#innerdiv的top和left属性
+			$(outerdiv).fadeIn("fast");//淡入显示#outerdiv及.pimg
+		});
+		$(outerdiv).click(function () {//再次点击淡出消失弹出层
+			$(this).fadeOut("fast");
+		});
+	}
+</script>
 <meta name="keywords" content="崔庆才,静觅,爬虫,Python,C,Java,PHP,HTML,JS,教程">
 <meta name="description" content="崔庆才的个人主页">
 <script type="text/javascript">
@@ -246,7 +344,7 @@ img.emoji {
 <link rel='stylesheet' id='metaslider-nivo-slider-css'  href="{% static 'css/nivo-slider.css' %}" type='text/css' media='all' property='stylesheet' />
 <link rel='stylesheet' id='metaslider-public-css'  href="{% static 'css/public.css' %}" type='text/css' media='all' property='stylesheet' />
 <link rel='stylesheet' id='metaslider-nivo-slider-bar-css'  href="{% static 'css/bar.css' %}" type='text/css' media='all' property='stylesheet' />
-<script type='text/javascript' src="{% static 'js/jquery.js' %}"></script>
+<script type='text/javascript' src="{% static 'js/jquery2.js' %}"></script>
 <script type='text/javascript' src="{% static 'js/wp-embed.min.js' %}"></script>
 <script type='text/javascript' src="{% static 'js/jquery.nivo.slider.pack.js' %}"></script>
 
