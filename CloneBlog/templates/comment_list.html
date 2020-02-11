@@ -3,7 +3,7 @@
 </div>
 
 <div id="respond" class="no_webshot">
-    <form action="https://cuiqingcai.com/wp-comments-post.php" method="post" id="commentform">
+    <form action="{% url 'comment:add_comment' %}" method="post" id="commentform">
     
     <div class="comt-title">
         <div class="comt-avatar pull-left">
@@ -31,7 +31,8 @@
                 <span data-type="comment-insert-smilie" class="muted comt-smilie"><i class="fa fa-smile-o"></i> 表情</span>
                 <span class="muted comt-mailme">
                     <label for="comment_mail_notify" class="checkbox inline" style="padding-top:0">
-                        <input type="checkbox" name="comment_mail_notify" id="comment_mail_notify" value="comment_mail_notify" checked="checked">有人回复时邮件通知我
+                        <input type="checkbox" name="comment_mail_notify" id="comment_mail_notify" 
+                        value="comment_mail_notify" checked="checked">有人回复时邮件通知我
                     </label>
                 </span>
             </div>
