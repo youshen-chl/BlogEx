@@ -13,6 +13,7 @@ class CommentUser(models.Model):
     address = models.CharField(max_length=200, verbose_name='地址')
 
 
+#评论信息表  抽象基类
 class Comment(models.Model):
     author = models.ForeignKey(CommentUser, related_name='%(class)%_related', verbose_name='评论人')
     create_date = models.DateTimeField('创建时间', auto_now_add=True)
@@ -21,7 +22,7 @@ class Comment(models.Model):
     rep_to = models.ForeignKey('self', verbose_name='回复', related_name='%(class)%_rep_comments', blank=True, null=True)
 
     class Meta:
-        abstract = True
+        abstract = True # 表示 该类为抽象基类
 
 
     def __str__(self):
@@ -39,6 +40,28 @@ class Comment(models.Model):
                             )
         return to_md
 
+# 文章评论区表， 继承至 评论信息表
+class ArticleComment(Comment):
+    # 记录评论属于哪一篇文章
+    belong = models.ForeignKey(Article, related_name='article_comments', verbose_name='所属文章', on_delete=models.CASCADE)
 
+    class Meta:
+        verbose_name='文章评论'
+        verbose_name_plural = verbose_name
+        ordering = ['create_date']
+
+#关于自己 页面的评论
+class AboutselfComment(Comment):
+    class Meta:
+        verbose_name='关于自己的评论'
+        verbose_name_plural = verbose_name
+        ordering = ['create_date']
+
+#给我留言 页面的评论
+class MessageComment(Comment):
+    class Meta:
+        verbose_name='给我留言的评论'
+        verbose_name_plural = verbose_name
+        ordering = ['create_date']
 
     

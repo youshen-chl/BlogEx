@@ -20,4 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('storm.urls')),
     path('comment/', include('comment.urls')),
+    path('accounts/',include('user.urls')),
 ]
