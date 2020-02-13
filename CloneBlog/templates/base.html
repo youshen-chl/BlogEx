@@ -284,16 +284,16 @@ window._deel = {name: '静觅',url: 'https://cuiqingcai.com/wp-content/themes/Yu
 		<div class="pull-right">
             {% if request.session.username|default:'' == '' %}
             <i class="fa fa-power-off"></i> 
-            <a href="#">登录</a>	
+            <a href="{% url 'user:login' %}">登录</a>	
             &nbsp;&nbsp;&nbsp;<i class="fa fa-user-plus"></i>
-            <a href="#">注册</a>
+            <a href="{% url 'user:register' %}">注册</a>
             {% else %}
             &nbsp;&nbsp;&nbsp;<i class="fa fa-user"></i> 
             <a href="/">投稿</a>
             &nbsp;&nbsp;&nbsp; <i class="fa fa-user-circle-o" aria-hidden="true"></i>
             <a href="#">{{ request.session.username }} </a>
             &nbsp;&nbsp;&nbsp;<i class="fa fa-sign-out" aria-hidden="true"></i>
-            <a href="#">退出</a>
+            <a href="{% url 'user:logout' %}">退出</a>
             {% endif %}		
         </div>
         <!-- 登录注册结束 -->

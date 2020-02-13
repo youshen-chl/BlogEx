@@ -15,11 +15,11 @@ class CommentUser(models.Model):
 
 #评论信息表  抽象基类
 class Comment(models.Model):
-    author = models.ForeignKey(CommentUser, related_name='%(class)%_related', verbose_name='评论人')
+    author = models.ForeignKey(CommentUser, related_name='%(class)s_related', verbose_name='评论人', on_delete=models.CASCADE)
     create_date = models.DateTimeField('创建时间', auto_now_add=True)
     content = models.TextField('评论内容')
-    parent = models.ForeignKey('self', verbose_name='父评论', related_name='%(class)%_child_comments', blank=True, null=True)
-    rep_to = models.ForeignKey('self', verbose_name='回复', related_name='%(class)%_rep_comments', blank=True, null=True)
+    parent = models.ForeignKey('self', verbose_name='父评论', related_name='%(class)s_child_comments', blank=True, null=True, on_delete=models.CASCADE)
+    rep_to = models.ForeignKey('self', verbose_name='回复', related_name='%(class)s_rep_comments', blank=True, null=True, on_delete=models.CASCADE)
 
     class Meta:
         abstract = True # 表示 该类为抽象基类

@@ -1,0 +1,101 @@
+{% extends 'account/base.html' %}
+
+{% block main %}
+
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-sm-8 col-md-6 offset-sm-2 offset-md-3 px-xl-5">
+                <div class="card rounded-0 px-3 px-lg-4">
+                    <div class="card-header text-center bg-white py-2">
+                        <h3 class="my-1 text-info">注册</h3>
+                    </div>
+                    <div class="card-body card-login">
+                        <form class="signup" method="POST" id="signup_form" action="{% url 'user:register' %}">
+                            {% csrf_token %}
+
+                            <div id="div_id_email" class="form-group">
+                                <label for="id_email" class="form-control-label requiredField">
+                                    E-mail<span class="asteriskField">*</span>
+                                </label>
+                                <div class="">
+                                    <input type="email" name="email" placeholder="E-mail地址" autofocus="autofocus" 
+                                    value="{{ email }}" class="textinput textInput form-control" required id="id_email" />
+                                    <p id="error_1_id_email" class="help-block">
+                                        <strong>
+                                            {% if email_error == 'exit' %}此e-mail地址已被其他用户注册
+                                            {% elif email_error == 'format' %}请输入的有效邮箱地址
+                                            {% endif %}
+                                        </strong>
+                                    </p>
+                                </div>
+                                
+                            </div>
+                            <div id="div_id_username" class="form-group">
+                                <label for="id_username" class="form-control-label requiredField">
+                                    用户名<span class="asteriskField">*</span>
+                                </label>
+                                <div class="">
+                                    <input type="text" name="username" placeholder="用户名" autofocus="autofocus" 
+                                    value="{{ username }}" class="textinput textInput form-control" required id="id_username" />
+                                    <p id="error_1_id_username" class="help-block">
+                                        <strong>
+                                            {% if user_error == 'exit' %}已存在一位使用该名字的用户
+                                            {% elif user_error == 'length' %}用户名限制5~20个字符
+                                            {% endif %}
+                                        </strong>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div id="div_id_password" class="form-group"> 
+                                <label for="id_password" class="form-control-label  requiredField">
+                                密码<span class="asteriskField">*</span> 
+                                </label> 
+                                <div class=""> 
+                                    <input type="password" value="{{ pwd }}" name="password" placeholder="密码" 
+                                    class="textinput textInput form-control" required id="id_password" /> 
+                                    <p id="error_1_id_password1" class="help-block">
+                                        <strong>{% if pwd_error == 'nums' %}密码不能使用纯数字
+                                                {% elif pwd_error == 'length' %}密码限制8~20个字符
+                                                {% endif %}
+                                        </strong>
+                                    </p>
+                                </div> 
+                                
+                            </div>
+                            <div id="div_id_password2" class="form-group"> 
+                                <label for="id_password2" class="form-control-label  requiredField">
+                                确认密码<span class="asteriskField">*</span> 
+                                </label> 
+                                <div class=""> 
+                                    <input type="password" value="{{ pwd }}" name="password2" placeholder="密码（重复)" 
+                                    class="textinput textInput form-control" required id="id_password2" /> 
+                                    <p id="error_1_id_password2" class="help-block">
+                                        <strong>{% if pwd_error == 'unequal' %}两次输入的密码必须相同{% endif %}</strong>
+                                    </p>
+                                </div> 
+                                
+                            </div>
+
+                            <!-- <div class="form-group"> 
+                                <div id="div_id_remember" class="checkbox"> 
+                                    <label for="id_remember" class=""> 
+                                        <input type="checkbox" name="remember" class="checkboxinput" id="id_remember" />记住我
+                                    </label> 
+                                </div> 
+                            </div> -->
+                            <input type="hidden" name="next" value="{{ next_to }}"/>
+                            <a class="secondaryAction" href="{% url 'user:login' %}">使用已有帐号登录</a>
+                            <button class="pull-right btn btn-info btn-sm rounded-0" type="submit">注册</button>
+                            
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+{% endblock %}

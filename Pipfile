@@ -12,6 +12,9 @@ markdown = "*"
 gunicorn = "*"
 supervisor = "*"
 faker = "*"
+pillow = "*"
+django-imagekit = "*"
+emoji = "*"
 
 [requires]
 python_version = "3.7"
