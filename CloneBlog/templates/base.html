@@ -291,7 +291,7 @@ window._deel = {name: '静觅',url: 'https://cuiqingcai.com/wp-content/themes/Yu
             &nbsp;&nbsp;&nbsp;<i class="fa fa-user"></i> 
             <a href="/">投稿</a>
             &nbsp;&nbsp;&nbsp; <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-            <a href="#">{{ request.session.username }} </a>
+            <a href="{% url 'user:profile' %}">{{ request.session.username }} </a>
             &nbsp;&nbsp;&nbsp;<i class="fa fa-sign-out" aria-hidden="true"></i>
             <a href="{% url 'user:logout' %}">退出</a>
             {% endif %}		

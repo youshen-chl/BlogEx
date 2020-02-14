@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .forms import loginForm, userForm, ProfileForm
 from .models import Ouser
+from django.contrib import messages
 import re
 # Create your views here.
 
@@ -123,3 +124,19 @@ def registerView(request):
 @login_required
 def profileView(request):
     return render(request, 'oauth/profile.html')
+
+
+def changeProfileView(request):
+    if request.method == 'POST':
+        # 上传文件需要request.FILES
+        form = ProfileForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+
+            messages.add_message(request, messages.SUCCESS, '个人信息更新成功！')
+            return HttpResponseRedirect('user:profile')
+    else:
+        #GET
+        form = ProfileForm(instance=request.user)
+
+    return render(request, 'oauth/change_profile.html', context={'form':form})

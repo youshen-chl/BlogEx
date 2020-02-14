@@ -18,7 +18,7 @@
                 <div class="card-body">
                     <ul class="list-group">
                         <li class="list-group-item text-center border-0" id="profile-avatar">
-{% get_user_data request.session.uid as user %}
+                        {% get_user_data request.session.uid as user %}
                             {% if user %}
 
                             <img class="avatar" src="/media/{{ user.avatar }}" alt="{{user.username}}">
