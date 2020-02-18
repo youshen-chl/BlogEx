@@ -21,7 +21,7 @@
                         {% get_user_data request.session.uid as user %}
                             {% if user %}
 
-                            <img class="avatar" src="/media/{{ user.avatar }}" alt="{{user.username}}">
+                            <img class="avatar" src="{{ user.avatar.url }}" alt="{{user.username}}">
 
                         </li>
                         <li class="list-group-item ml-5 border-0">

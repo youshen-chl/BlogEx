@@ -7,6 +7,7 @@ from storm.models import Article
 import markdown
 import emoji
 
+#游客 数据表
 class CommentUser(models.Model):
     nickname = models.CharField(max_length=20, verbose_name='昵称')
     email = models.CharField(max_length=30, verbose_name='邮箱')
@@ -36,8 +37,7 @@ class Comment(models.Model):
                                 extensions=[
                                     'markdown.extensions.extra',
                                     'markdown.extensions.codehilite'
-                                ]
-                            )
+                                ])
         return to_md
 
 # 文章评论区表， 继承至 评论信息表
