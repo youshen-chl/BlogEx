@@ -28,6 +28,7 @@ def loginView(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 if user.is_active:
+                    # print(request.session.items())  #这里session为空的
                     login(request, user)    #登入 ， 会吧用户id存入session中 ‘_auth_user_id'
                     
                     # 存入用户信息
@@ -41,6 +42,8 @@ def loginView(request):
                         reqs.set_cookie('username', username)
                     else:
                         reqs.set_cookie('username', '', max_age=-1)
+
+                    # print(request.session.items())
                     return reqs
                 else:
                     context['inactive'] = True
@@ -61,7 +64,9 @@ def logoutView(request):
     next_to = request.GET.get('next','/')
     if next_to == '':
         next_to = '/'
+    # print(request.session.items())
     logout(request)
+    # print(request.session.items())  # logout后 session为空， 被清空了
     return HttpResponseRedirect(next_to)
 
 @csrf_exempt
